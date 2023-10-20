@@ -1,10 +1,14 @@
 using System.ComponentModel.DataAnnotations;
+using HashidsNet;
 using SuperPlay.Abstractions.Domain;
 
-public class UserResource : IHasId<string>
+public class UserResource : IHasId<int>
 {
+    private static Hashids _hashids = new(nameof(UserResource), 10);
+   
+    [Key]
     [Required, MaxLength(100)]
-    public string Id { get; set; }
+    public int Id { get; set; }
 
     public Guid UserId { get; set; }
     
@@ -18,4 +22,14 @@ public class UserResource : IHasId<string>
     public int Value { get; set; }
 
     public User? User { get; set; }
+
+
+    public static UserResource Wallet(Guid userId, WalletTypeEnum key, int val = 100)
+        => new UserResource
+        {
+            UserId = userId,
+            ResourceType = ResourceTypeEnum.Wallet,
+            Key = (int)key,
+            Value = val
+        };
 }

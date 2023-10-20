@@ -13,4 +13,10 @@ public class UserToken : IHasId<int>
     public string Token { get; set; }
 
     public User? User { get; set; }
+
+    public static UserToken Create(Guid instanceId, string token)
+    => new()   {
+        UserId = instanceId,
+        Token = token
+    };
 }

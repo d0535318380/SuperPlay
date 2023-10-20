@@ -16,12 +16,12 @@ public class GenericRepository<TKey, TEntity> : IGenericRepository<TKey, TEntity
         _dbSet = _context.Set<TEntity>();
     }
     
-    public ValueTask<TEntity?> FindAsync(TKey id, CancellationToken token = default)
+    public virtual ValueTask<TEntity?> FindAsync(TKey id, CancellationToken token = default)
     {
         return _dbSet.FindAsync(id, token);
     }
 
-    public async Task<IReadOnlyCollection<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken token = default)
+    public virtual async Task<IReadOnlyCollection<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken token = default)
     {
         predicate.ThrowIfNull(nameof(predicate));
         
@@ -30,7 +30,7 @@ public class GenericRepository<TKey, TEntity> : IGenericRepository<TKey, TEntity
         return items;
     }
 
-    public async Task<int> AddAsync(TEntity entity, CancellationToken token = default)
+    public virtual async Task<int> AddAsync(TEntity entity, CancellationToken token = default)
     {
         entity.ThrowIfNull(nameof(entity));
         
@@ -43,11 +43,9 @@ public class GenericRepository<TKey, TEntity> : IGenericRepository<TKey, TEntity
         return count;
     }
 
-    public async Task<int> UpdateAsync(TEntity entity, CancellationToken token = default)
+    public virtual async Task<int> UpdateAsync(TEntity entity, CancellationToken token = default)
     {
         entity.ThrowIfNull(nameof(entity));
-        
-        _dbSet.Add(entity);
         
         _dbSet.Update(entity);
         

@@ -11,12 +11,12 @@ namespace SuperPlay.Contracts.Tests;
 public class MessageFactoryTests
 {
     private readonly ITestOutputHelper _testOutput;
-    protected readonly ILoggerFactory LogFactory;
+    private readonly ILoggerFactory _logFactory;
 
     public MessageFactoryTests(ITestOutputHelper  testOutput)
     {
         _testOutput = testOutput;
-        LogFactory = Divergic.Logging.Xunit.LogFactory.Create(testOutput);
+        _logFactory = Divergic.Logging.Xunit.LogFactory.Create(testOutput);
     }
     
     [Fact]
@@ -38,6 +38,6 @@ public class MessageFactoryTests
 
 
     private IMessageFactory Create()
-        => new MessageFactory(LogFactory.CreateLogger<MessageFactory>());
+        => new MessageFactory(_logFactory.CreateLogger<MessageFactory>());
 
 }

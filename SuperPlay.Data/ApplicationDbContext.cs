@@ -8,8 +8,10 @@ public class ApplicationDbContext : DbContext
         : base(options)
     {
     }
+    
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
+        optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
         base.OnConfiguring(optionsBuilder);
     }
 
