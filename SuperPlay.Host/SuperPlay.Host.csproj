@@ -9,13 +9,14 @@
     <ItemGroup>
       <ProjectReference Include="..\SuperPlay.Abstractions\SuperPlay.Abstractions.csproj" />
       <ProjectReference Include="..\SuperPlay.Data\SuperPlay.Data.csproj" />
+      <ProjectReference Include="..\SuperPlay.Services\SuperPlay.Services.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Microsoft.EntityFrameworkCore.Tools">
-        <PrivateAssets>all</PrivateAssets>
-        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      </PackageReference>
+      <PackageReference Include="Serilog.Extensions.Logging" />
+      <PackageReference Include="Serilog.Formatting.Compact" />
+      <PackageReference Include="Serilog.Sinks.Async" />
+        <PackageReference Include="Serilog.Sinks.Console" />
     </ItemGroup>
 
 </Project>
