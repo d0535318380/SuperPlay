@@ -9,8 +9,11 @@
 
 
     <ItemGroup>
+      <PackageReference Include="Hashids.net" />
+      <PackageReference Include="Mapster" />
       <PackageReference Include="MessagePack" />
       <PackageReference Include="MessagePack.Annotations" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore" />
     </ItemGroup>
 
 
