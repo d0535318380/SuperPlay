@@ -4,7 +4,7 @@ using SuperPlay.Abstractions.Extensions;
 
 namespace SuperPlay.Abstractions.Services;
 
-public class SocketConnection : IHasId
+public class SocketConnection : IHasStringId
 {
     public string Id { get; set; } = Guid.NewGuid().ToString("P");
     public WebSocket Socket { get; set; }

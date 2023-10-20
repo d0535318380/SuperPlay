@@ -1,5 +1,4 @@
-﻿using System.Net.WebSockets;
-using Microsoft.Extensions.Caching.Distributed;
+﻿using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using SuperPlay.Abstractions.Extensions;
@@ -35,7 +34,7 @@ public class GameService : BackgroundService,
         
         _sockets.TryAdd(connection.Id, connection);
         
-        
+        _logger.LogInformation("StartListenerAsync: {ConnectionId}", connection.Id);
         throw new NotImplementedException();
     }
     

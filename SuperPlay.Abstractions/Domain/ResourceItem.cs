@@ -1,3 +1,5 @@
+using SuperPlay.Abstractions.Domain;
+
 namespace SuperPlay.Contracts.Login;
 
 public class ResourceItem

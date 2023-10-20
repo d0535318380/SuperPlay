@@ -1,7 +1,6 @@
-namespace SuperPlay.Contracts.Login;
+namespace SuperPlay.Abstractions.Domain;
 
 public enum ResourceTypeEnum
 {
-    Coins = 1,
-    Rolls = 2
+    Wallet = 1,
 }

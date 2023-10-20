@@ -1,4 +1,4 @@
-public interface IHasId
+public interface IHasId<TId>
 {
-    string Id { get; set; }
+    TId Id { get; set; }
 }
