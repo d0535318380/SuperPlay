@@ -1,8 +1,9 @@
 ﻿using SuperPlay.Abstractions.Domain;
+using SuperPlay.Abstractions.Mediator;
 
 namespace SuperPlay.Abstractions.Factory;
 
 public interface IMessageFactory
 {
-    object Create(GenericMessage message);
+    IBaseRequest FromRequest(GenericMessage message);
 }

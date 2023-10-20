@@ -1,6 +1,6 @@
 namespace SuperPlay.Abstractions.Mediator;
 
-public interface IBaseResponse
+public interface IBaseResponse : IHasStringId
 {
     
 }

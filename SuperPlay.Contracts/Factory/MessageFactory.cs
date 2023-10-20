@@ -22,7 +22,7 @@ public class MessageFactory : IMessageFactory
             .ToDictionary(x => x.FullName ?? x.Name, x => x, StringComparer.OrdinalIgnoreCase);
     }
 
-    public object Create(GenericMessage message)
+    public IBaseRequest FromRequest(GenericMessage message)
     {
         message.ThrowIfNull(nameof(message));
 
@@ -35,7 +35,7 @@ public class MessageFactory : IMessageFactory
 
         var type = _typesMap[message.Type];
 
-        var instance = MessagePack.MessagePackSerializer.Deserialize(type, message.Payload);
+        var instance = MessagePack.MessagePackSerializer.Deserialize(type, message.Payload) as IBaseRequest;
 
         if(instance is IHasConnectionId connection)
         {

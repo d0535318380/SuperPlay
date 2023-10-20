@@ -26,7 +26,7 @@ public class MessageFactoryTests
         var message = GenericMessage.Create(source);
         var factory = Create();
         
-        var result = factory.Create(message);
+        var result = factory.FromRequest(message);
         
         result
             .Should()
