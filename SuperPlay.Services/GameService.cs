@@ -4,17 +4,18 @@ using Microsoft.Extensions.Logging;
 using SuperPlay.Abstractions.Extensions;
 using SuperPlay.Abstractions.Mediator;
 using SuperPlay.Abstractions.Services;
-using SuperPlay.Contracts.Login;
 using System.Collections.Concurrent;
 using System.Net.WebSockets;
 using SuperPlay.Abstractions.Factory;
+using SuperPlay.Contracts.Events;
 using SuperPlay.Services.Extensions;
 
 namespace SuperPlay.Services;
 
 public class GameService : BackgroundService, 
     IGameService,
-    INotificationHandler<LoginEvent>
+    INotificationHandler<UserConnectedEvent>,
+    INotificationHandler<UserNotificationEvent>
 {
     private readonly IMessageFactory _messageFactory;
     private readonly IMediator _mediator;
@@ -22,6 +23,7 @@ public class GameService : BackgroundService,
     private readonly ILogger<GameService> _logger;
     
     private readonly ConcurrentDictionary<string, SocketConnection> _sockets = new();
+    private readonly ConcurrentDictionary<Guid, SocketConnection> _userConnections = new();
 
     public GameService(
         IMessageFactory messageFactory,
@@ -75,10 +77,26 @@ public class GameService : BackgroundService,
 
     protected override Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        throw new NotImplementedException();
+        return Task.CompletedTask;
     }
 
-    public Task HandleAsync(LoginEvent notification, CancellationToken cancellationToken)
+    public Task HandleAsync(UserConnectedEvent notification, CancellationToken cancellationToken)
+    {
+        var isExists = _sockets.TryGetValue(notification.ConnectionId, out var socket);
+
+        if (!isExists || socket == null)
+        {
+            return Task.CompletedTask;
+        }
+        
+        socket.UserId = notification.UserId;
+        
+        _userConnections.AddOrUpdate(notification.UserId, socket, (_, _) => socket);
+        
+        return Task.CompletedTask;
+    }
+
+    public Task HandleAsync(UserNotificationEvent notification, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }

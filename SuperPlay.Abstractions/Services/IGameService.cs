@@ -6,6 +6,8 @@ namespace SuperPlay.Abstractions.Services;
 public class SocketConnection : IHasStringId
 {
     public string Id { get; set; } = Guid.NewGuid().ToString("P");
+    
+    public Guid UserId { get; set; }
     public WebSocket Socket { get; set; }
 
     public TaskCompletionSource<object> TaskCompletionSource { get; set; } = new();

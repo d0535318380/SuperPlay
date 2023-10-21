@@ -40,6 +40,4 @@ public class GenericMessage : IHasStringId, IHasConnectionId
             Payload = MessagePackSerializer.Serialize((object) payload)
         };
     }
-
 }
-
