@@ -1,20 +1,15 @@
 using FluentAssertions;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
+using SuperPlay.Data;
 using Xunit.Abstractions;
 
-namespace SuperPlay.Data.Tests;
+namespace SuperPlay.Services.Tests;
 
-public class RepositoryTests
+public class RepositoryTests : TestBase
 {
-    private readonly ITestOutputHelper _testOutput;
-    private readonly ILoggerFactory _logFactory;
-
-    public RepositoryTests(ITestOutputHelper testOutput)
+    public RepositoryTests(ITestOutputHelper testOutput) : base(testOutput)
     {
-        _testOutput = testOutput;
-        _logFactory = Divergic.Logging.Xunit.LogFactory.Create(testOutput);
     }
 
     [Fact]

@@ -5,7 +5,7 @@ using SuperPlay.Abstractions.Mediator;
 namespace SuperPlay.Abstractions.Domain;
 
 [MessagePackObject(keyAsPropertyName: true)]
-public class GenericMessage : IHasStringId, IHasConnectionId
+public class GenericMessage : IHasStringId, IHasConnectionId, IRequest<IBaseResponse>
 {
     public string Id { get; set; }
     public string Type { get; set; }

@@ -10,7 +10,7 @@ public class RepositoryGeneric<TKey, TEntity> : IGenericRepository<TKey, TEntity
     private readonly DbContext _context;
     private readonly DbSet<TEntity> _dbSet;
 
-    public RepositoryGeneric(DbContext context)
+    public RepositoryGeneric(ApplicationDbContext context)
     {
         _context = context;
         _dbSet = _context.Set<TEntity>();

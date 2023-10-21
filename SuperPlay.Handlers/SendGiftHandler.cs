@@ -9,11 +9,11 @@ namespace SuperPlay.Handlers;
 public class SendGiftHandler : RequestHandlerBase<SendGiftCommand, SendGiftResponse>
 {
     private readonly IResourceRepository _repository;
-    private readonly IPublisher _publisher;
+    private readonly IMediator _publisher;
 
     public SendGiftHandler(
         IResourceRepository repository,
-        IPublisher publisher,
+        IMediator publisher,
         ILoggerFactory loggerFactory) : base(loggerFactory)
     {
         _repository = repository;

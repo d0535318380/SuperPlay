@@ -10,15 +10,12 @@ namespace SuperPlay.Handlers;
 public class UpdateResourceHandler : RequestHandlerBase<UpdateResourcesCommand, UpdateResourcesResponse>
 {
     private readonly IResourceRepository _resourceRepository;
-    private readonly IPublisher _publisher;
 
     public UpdateResourceHandler(
         IResourceRepository resourceRepository,
-        IPublisher  publisher,
         ILoggerFactory loggerFactory) : base(loggerFactory)
     {
         _resourceRepository = resourceRepository;
-        _publisher = publisher;
     }
 
     protected override async Task<UpdateResourcesResponse> HandleInternalAsync(UpdateResourcesCommand request, CancellationToken cancellationToken)

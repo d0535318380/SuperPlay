@@ -6,16 +6,18 @@ using SuperPlay.Abstractions.Mediator;
 using SuperPlay.Abstractions.Services;
 using System.Collections.Concurrent;
 using System.Net.WebSockets;
+using SuperPlay.Abstractions.Domain;
 using SuperPlay.Abstractions.Factory;
 using SuperPlay.Contracts.Events;
 using SuperPlay.Services.Extensions;
 
 namespace SuperPlay.Services;
 
-public class GameService : BackgroundService, 
+public sealed class GameService : BackgroundService, 
     IGameService,
     INotificationHandler<UserConnectedEvent>,
-    INotificationHandler<UserNotificationEvent>
+    INotificationHandler<UserNotificationEvent>,
+    IRequestHandler<GenericMessage, IBaseResponse>
 {
     private readonly IMessageFactory _messageFactory;
     private readonly IMediator _mediator;
@@ -38,7 +40,6 @@ public class GameService : BackgroundService,
         _logger = logger.ThrowIfNull(nameof(cache));;
     }    
    
-
     
     public async Task StartListenerAsync(SocketConnection connection, CancellationToken token)
     {
@@ -68,8 +69,7 @@ public class GameService : BackgroundService,
         while (socket.State == WebSocketState.Open && !token.IsCancellationRequested)
         {
             var message = await connection.ReceiveAsync(token);
-            var request = _messageFactory.FromRequest(message);
-            var response = await _mediator.SendAsync(request, token);
+            var response = await HandleAsync(message, token);
 
             await connection.SendAsync(response, token);
         }
@@ -80,7 +80,7 @@ public class GameService : BackgroundService,
         return Task.CompletedTask;
     }
 
-    public Task HandleAsync(UserConnectedEvent notification, CancellationToken cancellationToken)
+    public Task HandleAsync(UserConnectedEvent notification, CancellationToken cancellationToken = default)
     {
         var isExists = _sockets.TryGetValue(notification.ConnectionId, out var socket);
 
@@ -99,6 +99,21 @@ public class GameService : BackgroundService,
     public Task HandleAsync(UserNotificationEvent notification, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
+    }
+
+    public async Task<IBaseResponse> HandleAsync(GenericMessage message, CancellationToken token = default)
+    {
+        try
+        {
+            var request = _messageFactory.FromRequest(message);
+            var response = await _mediator.SendAsync(request, token);
+
+            return response;
+        }
+        catch (Exception e)
+        {
+            throw;
+        }
     }
 }
 

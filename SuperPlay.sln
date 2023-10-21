@@ -20,7 +20,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuperPlay.Contracts.Tests",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuperPlay.Data", "SuperPlay.Data\SuperPlay.Data.csproj", "{429146D6-806B-42BA-A798-DFC440CB7B4A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuperPlay.Data.Tests", "SuperPlay.Data.Tests\SuperPlay.Data.Tests.csproj", "{FC50C5DE-6FE8-4507-A525-FC26065AD4C7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuperPlay.Services.Tests", "SuperPlay.Services.Tests\SuperPlay.Services.Tests.csproj", "{FC50C5DE-6FE8-4507-A525-FC26065AD4C7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
