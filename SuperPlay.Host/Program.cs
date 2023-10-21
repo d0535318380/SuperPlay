@@ -1,5 +1,4 @@
 using SuperPlay.Abstractions.Services;
-using SuperPlay.Services;
 using SuperPlay.Services.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,7 +9,6 @@ services.AddServerServices(builder.Configuration);
 var app = builder.Build();
 
 app.UseWebSockets();
-
 
 app.MapGet("/ws", async (HttpContext httpContext, IGameService gameService, CancellationToken token) =>
 {

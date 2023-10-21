@@ -1,6 +1,14 @@
-var builder = WebApplication.CreateBuilder(args);
-var app = builder.Build();
+using Serilog;
+using Serilog.Formatting.Compact;
 
-app.MapGet("/", () => "Hello World!");
+var builder = Host.CreateApplicationBuilder(args);
+var config = builder.Configuration;
+var  services = builder.Services;
+builder.Services.AddLogging();
 
-app.Run();
+services.AddSerilog(cfg => 
+    cfg.WriteTo.Async(wt => wt.Console(new RenderedCompactJsonFormatter())));
+
+
+var host = builder.Build();
+host.Run();
