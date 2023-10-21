@@ -21,11 +21,11 @@ public class GenericRepository<TKey, TEntity> : IGenericRepository<TKey, TEntity
         return _dbSet.FindAsync(id, token);
     }
 
-    public virtual async Task<IReadOnlyCollection<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken token = default)
+    public virtual async Task<TEntity?> FindAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken token = default)
     {
         predicate.ThrowIfNull(nameof(predicate));
         
-        var items = await _dbSet.Where(predicate).ToArrayAsync(token);
+        var items = await _dbSet.Where(predicate).FirstOrDefaultAsync(token);
 
         return items;
     }

@@ -1,13 +1,20 @@
+using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Serilog.Formatting.Compact;
 using SuperPlay.Abstractions.Services;
+using SuperPlay.Data;
 using SuperPlay.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
 
+services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+
 services.AddHostedService<GameService>();
 services.AddSingleton<IGameService, GameService>(sp => sp.GetRequiredService<GameService>());
+
 services.AddSerilog(cfg => 
     cfg.WriteTo.Async(wt => wt.Console(new RenderedCompactJsonFormatter())));
 
@@ -25,12 +32,9 @@ app.MapGet("/ws", async (IGameService gameService, HttpContext httpContext, Canc
     }
     
     using var webSocket = await httpContext.WebSockets.AcceptWebSocketAsync();
-    var socketFinishedTcs = new TaskCompletionSource<object>();
     var connection = SocketConnection.Create(webSocket);
     
-    gameService.StartListenerAsync(connection, socketFinishedTcs);
-    
-    await socketFinishedTcs.Task;
+    await gameService.StartListenerAsync(connection, token);
 });
 
 

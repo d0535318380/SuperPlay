@@ -1,24 +1,65 @@
-﻿using SuperPlay.Abstractions.Data;
+﻿using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Logging;
+using SuperPlay.Abstractions.Data;
 using SuperPlay.Abstractions.Mediator;
+using SuperPlay.Contracts.Extensions;
 using SuperPlay.Contracts.Login;
 
 namespace SuperPlay.Handlers;
 
-public sealed class LoginHandler : IRequestHandler<LoginRequest, LoginResponse>
+public sealed class LoginHandler : RequestHandlerBase<LoginRequest, LoginResponse>
 {
     private readonly IUserRepository _userRepository;
+    private readonly IDistributedCache _cache;
 
-    public LoginHandler(IUserRepository userRepository)
+    public LoginHandler(
+        IUserRepository  userRepository, 
+        IDistributedCache cache, 
+        ILoggerFactory loggerFactory) : base(loggerFactory)
     {
         _userRepository = userRepository;
+        _cache = cache;
+    }
+    
+    protected override async Task<LoginResponse> HandleInternalAsync(LoginRequest request, CancellationToken cancellationToken)
+    {
+        var user = await GetOrCreateUserAsync(request, cancellationToken);
+        var isUserConnected = await _cache.IsUserConnectedAsync(user.Id, cancellationToken);
+        
+        var response = new LoginResponse()
+        {
+            UserId = user.Id,
+            Status = isUserConnected ? RequestStatus.Failed : RequestStatus.Success
+        };
+
+        if (isUserConnected)
+        {
+            response.Message = "User is already connected";
+            return response;
+        }
+
+        await _cache.SetUserConnectionAsync(request, cancellationToken);
+
+        return response;
     }
 
-    public async Task<LoginResponse> HandleAsync(LoginRequest request, CancellationToken cancellationToken)
+    private async Task<User> GetOrCreateUserAsync(LoginRequest request, CancellationToken cancellationToken)
     {
-        // var predicate = new Predicate<User>(x => x.Tokens.Any(t => t.Token == request.Token));
-        // var user = await _userRepository.GetAsync(request.Username, cancellationToken);
-        //
+      var user = await _userRepository.FindAsync(
+            x=>x.Tokens.Any(t=>t.Token == request.Token), cancellationToken);
 
-        throw new NotImplementedException();
+      if (user is not null)
+      {
+          return user;
+      }
+    
+      user = User.Create($"Guest-{request.Token}", request.Token);
+      
+      await _userRepository.AddAsync(user, cancellationToken);
+
+      return user;
     }
 }
+
+
+          

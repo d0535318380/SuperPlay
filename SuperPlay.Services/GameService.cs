@@ -38,7 +38,7 @@ public class GameService : BackgroundService,
    
 
     
-    public void StartListenerAsync(SocketConnection connection, TaskCompletionSource<object> tcs)
+    public async Task StartListenerAsync(SocketConnection connection, CancellationToken token)
     {
         connection.ThrowIfNull(nameof(connection));
         
@@ -48,15 +48,13 @@ public class GameService : BackgroundService,
 
         try
         {
-            var token = new CancellationTokenSource();
-            var task = HandleRequestAsync(connection, token.Token);
+            await HandleRequestAsync(connection, token);
             
-            tcs.SetResult(task);
         }
         catch (Exception ex)
         {
-          tcs.SetException(ex);
            _logger.LogError(ex, "StartListenerAsync: {ConnectionId}", connection.Id);
+           throw;
         }
     }
 

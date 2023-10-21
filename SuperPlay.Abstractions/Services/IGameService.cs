@@ -1,5 +1,4 @@
-﻿using System.Dynamic;
-using System.Net.WebSockets;
+﻿using System.Net.WebSockets;
 using SuperPlay.Abstractions.Extensions;
 
 namespace SuperPlay.Abstractions.Services;
@@ -9,6 +8,8 @@ public class SocketConnection : IHasStringId
     public string Id { get; set; } = Guid.NewGuid().ToString("P");
     public WebSocket Socket { get; set; }
 
+    public TaskCompletionSource<object> TaskCompletionSource { get; set; } = new();
+    
     public static SocketConnection Create(WebSocket socket)
         => new SocketConnection()
         {
@@ -18,5 +19,5 @@ public class SocketConnection : IHasStringId
 
 public interface IGameService 
 { 
-    void StartListenerAsync(SocketConnection item, TaskCompletionSource<object> tcs);
+    Task StartListenerAsync(SocketConnection item, CancellationToken token);
 }
