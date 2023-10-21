@@ -14,18 +14,18 @@ public class User : IHasId<Guid>
     public ICollection<UserToken> Tokens { get; set; } = new List<UserToken>();
 
 
-    public static User Create(string title, string token)
+    public static User Create(string title, string? token = default, Guid? id = default)
     {
         var instance = new User
         {
+            Id = id ?? Guid.NewGuid(),
             Title = title,
         };
         
         instance.Resources.Add(UserResource.Wallet(instance.Id, WalletTypeEnum.Coins));
         instance.Resources.Add(UserResource.Wallet(instance.Id, WalletTypeEnum.Rolls));
-        instance.Tokens.Add(UserToken.Create(instance.Id, token));
+        instance.Tokens.Add(UserToken.Create(instance.Id, token ?? Guid.NewGuid().ToString()));
         
         return instance;
     } 
-    
 }

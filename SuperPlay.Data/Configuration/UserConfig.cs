@@ -15,4 +15,8 @@ public class UserConfig : IEntityTypeConfiguration<User>
 
         builder.HasIndex(x => x.Title);
     }
+    
+    
+    public readonly static User DefaultUser = User.Create("Default User");
+    public readonly static User DefaultFriend = User.Create("Default Friend");
 }

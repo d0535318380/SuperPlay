@@ -13,21 +13,7 @@ public class GenericMessage : IHasStringId, IHasConnectionId, IRequest<IBaseResp
     public string? ConnectionId { get; set; }
     public byte[] Payload { get; set; }
     
-    public static GenericMessage Create(IBaseResponse payload) 
-    {
-        payload.ThrowIfNull(nameof(payload));
-        
-        var type = payload.GetType();
-        
-        return new GenericMessage
-        {
-            Id = payload.Id,
-            Type = type.FullName ?? type.Name,
-            Payload = MessagePackSerializer.Serialize((object) payload)
-        };
-    }
-    
-    public static GenericMessage Create(IBaseRequest payload) 
+    public static GenericMessage Create(IHasStringId payload) 
     {
         payload.ThrowIfNull(nameof(payload));
         

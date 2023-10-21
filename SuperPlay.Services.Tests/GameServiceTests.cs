@@ -6,6 +6,7 @@ using SuperPlay.Contracts.Events;
 using SuperPlay.Contracts.Gift;
 using SuperPlay.Contracts.Login;
 using SuperPlay.Contracts.Resources;
+using SuperPlay.Data.Configuration;
 using Xunit.Abstractions;
 
 namespace SuperPlay.Services.Tests;
@@ -56,10 +57,15 @@ public class GameServiceTests : TestBase
     public async Task SendGift_Handle_Test()
     {
         var instance = CreateInstance<GameService>();
-        var request = new LoginRequest
+        var request = new SendGiftCommand()
         {
-            Token = Guid.NewGuid().ToString(),
-            ConnectionId = Guid.NewGuid().ToString()
+            UserId = UserConfig.DefaultUser.Id,
+            ToUserId = UserConfig.DefaultFriend.Id,
+           Item = new ResourceItem()
+           {
+               Key = 1,
+                Value = 10
+           }
         };
         var message = GenericMessage.Create(request);
         
@@ -73,10 +79,14 @@ public class GameServiceTests : TestBase
     [Fact]
     public async Task UpdateResource_Handle_Test()
     {
-        var request = new LoginRequest
+        var request = new UpdateResourcesCommand()
         {
-            Token = Guid.NewGuid().ToString(),
-            ConnectionId = Guid.NewGuid().ToString()
+            UserId = UserConfig.DefaultUser.Id,
+            Item = new ResourceItem()
+            {
+                Key = 1,
+                Value = 200
+            }
         };
         var message = GenericMessage.Create(request);
         var instance = CreateInstance<GameService>();

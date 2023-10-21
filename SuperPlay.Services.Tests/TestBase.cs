@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using SuperPlay.Data;
+using SuperPlay.Data.Configuration;
 using SuperPlay.Services.Extensions;
 using Xunit.Abstractions;
 
@@ -36,7 +38,13 @@ public abstract class  TestBase
 
         var serviceProvider = serviceCollection.BuildServiceProvider();
         var instance = serviceProvider.GetRequiredService(type);
+        var dbContext = serviceProvider.GetRequiredService<ApplicationDbContext>();
 
+        dbContext.Set<User>()
+            .AddRange(UserConfig.DefaultUser, UserConfig.DefaultFriend);
+        
+        dbContext.SaveChanges();
+        dbContext.Dispose();
         return instance;
     }
 }

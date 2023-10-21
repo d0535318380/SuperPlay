@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using SuperPlay.Abstractions.Data;
 using SuperPlay.Abstractions.Mediator;
+using SuperPlay.Contracts.Events;
 using SuperPlay.Contracts.Gift;
 using SuperPlay.Data;
 
@@ -32,9 +33,11 @@ public class SendGiftHandler : RequestHandlerBase<SendGiftCommand, SendGiftRespo
             request.ToUserId, request.Item.Key, request.Item.Value,
             cancellationToken);
 
-        var notification = GiftEvent.Create(request.UserId, destination);
-
+        var payload = GiftEvent.Create(request.UserId, destination);
+        var notification = UserNotificationEvent.Create(request.ToUserId, payload);
+        
         await _publisher.PublishAsync(notification, cancellationToken);
+        
         return SendGiftResponse.Create(source);
     }
 }

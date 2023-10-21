@@ -96,9 +96,16 @@ public sealed class GameService : BackgroundService,
         return Task.CompletedTask;
     }
 
-    public Task HandleAsync(UserNotificationEvent notification, CancellationToken cancellationToken)
+    public async Task HandleAsync(UserNotificationEvent notification, CancellationToken token)
     {
-        throw new NotImplementedException();
+        var isExists = _userConnections.TryGetValue(notification.UserId, out var connection);
+
+        if (!isExists || connection == null)
+        {
+            return;
+        }
+        
+        await connection.SendAsync(notification.Payload, token);
     }
 
     public async Task<IBaseResponse> HandleAsync(GenericMessage message, CancellationToken token = default)

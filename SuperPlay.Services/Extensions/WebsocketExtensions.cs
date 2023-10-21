@@ -37,14 +37,14 @@ public static class WebSocketExtensions
         return instance;
     }
     
-    public static async Task SendAsync(this SocketConnection context, IBaseResponse response, CancellationToken token = default)
+    public static async Task SendAsync(this SocketConnection context, IHasStringId response, CancellationToken token = default)
     {
         context.ThrowIfNull(nameof(context));
         context.Socket.ThrowIfNull(nameof(context.Socket));
         response.ThrowIfNull(nameof(response));
         
         var message = GenericMessage.Create(response);
-        var buffer = MessagePack.MessagePackSerializer.Serialize(response);
+        var buffer = MessagePack.MessagePackSerializer.Serialize(response, cancellationToken: token);
         
         await context.Socket.SendAsync(buffer, WebSocketMessageType.Binary, true, token);
     }

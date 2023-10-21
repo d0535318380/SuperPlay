@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using SuperPlay.Abstractions.Data;
 using SuperPlay.Abstractions.Mediator;
+using SuperPlay.Contracts.Events;
 using SuperPlay.Contracts.Extensions;
 using SuperPlay.Contracts.Login;
 
@@ -10,14 +11,17 @@ namespace SuperPlay.Handlers;
 public sealed class LoginHandler : RequestHandlerBase<LoginRequest, LoginResponse>
 {
     private readonly IUserRepository _userRepository;
+    private readonly IMediator _mediator;
     private readonly IDistributedCache _cache;
 
     public LoginHandler(
         IUserRepository  userRepository, 
+        IMediator mediator,
         IDistributedCache cache, 
         ILoggerFactory loggerFactory) : base(loggerFactory)
     {
         _userRepository = userRepository;
+        _mediator = mediator;
         _cache = cache;
     }
     
@@ -25,7 +29,7 @@ public sealed class LoginHandler : RequestHandlerBase<LoginRequest, LoginRespons
     {
         var user = await GetOrCreateUserAsync(request, cancellationToken);
         var isUserConnected = await _cache.IsUserConnectedAsync(user.Id, cancellationToken);
-        
+        var notification = UserConnectedEvent.Create(user.Id, request.ConnectionId);
         var response = new LoginResponse()
         {
             UserId = user.Id,
@@ -39,7 +43,8 @@ public sealed class LoginHandler : RequestHandlerBase<LoginRequest, LoginRespons
         }
 
         await _cache.SetUserConnectionAsync(request, cancellationToken);
-
+        await _mediator.PublishAsync(notification, cancellationToken);
+        
         return response;
     }
 
