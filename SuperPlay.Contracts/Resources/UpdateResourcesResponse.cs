@@ -1,6 +1,22 @@
-namespace SuperPlay.Contracts.Login;
+using SuperPlay.Abstractions.Domain;
+using SuperPlay.Abstractions.Mediator;
+using SuperPlay.Contracts.Gift;
 
-public class UpdateResourcesResponse
+namespace SuperPlay.Contracts.Resources;
+
+public class UpdateResourcesResponse : BaseResponse
 {
-    public ICollection<ResourceItem> Resources { get; set; } = new List<ResourceItem>();
+    public Guid UserId { get; set; }
+    public ResourceItem Item { get; set; }
+
+    public static UpdateResourcesResponse Create(UserResource item) =>
+        new()
+        {
+            UserId = item.UserId,
+            Item = new ResourceItem()
+            {
+                Key = item.Key,
+                Value = item.Value
+            }
+        };
 }

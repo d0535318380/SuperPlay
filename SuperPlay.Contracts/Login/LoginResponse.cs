@@ -9,9 +9,3 @@ public class LoginResponse : IBaseResponse
     public string? Message { get; set; }
     public RequestStatus Status { get; set; }
 }
-
-public enum RequestStatus
-{
-    Success,
-    Failed
-}

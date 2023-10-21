@@ -26,7 +26,7 @@ public abstract class RequestHandlerBase<TRequest, TResponse> : IRequestHandler<
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error while handling request {RequestType}", typeof(TRequest));
-
+            
             throw;
         }
     }

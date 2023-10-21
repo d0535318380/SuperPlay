@@ -1,7 +1,12 @@
+using SuperPlay.Abstractions.Domain;
+using SuperPlay.Abstractions.Mediator;
+using SuperPlay.Contracts.Gift;
+using SuperPlay.Contracts.Resources;
+
 namespace SuperPlay.Contracts.Login;
 
-public class UpdateResourcesCommand
+public class UpdateResourcesCommand : BaseRequest<UpdateResourcesResponse>
 {
     public Guid UserId { get; set; }
-    public ICollection<ResourceItem> Resources { get; set; } = new List<ResourceItem>();
+    public ResourceItem Item { get; set; } 
 }

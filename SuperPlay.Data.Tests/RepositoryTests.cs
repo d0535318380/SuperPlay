@@ -31,7 +31,7 @@ public class RepositoryTests
     public async Task Repository_Add_Test()
     {
         var context = await CreateAsync();
-        var repository = new GenericRepository<int, User>(context);
+        var repository = new RepositoryGeneric<int, User>(context);
         var player = User.Create("Test", Guid.NewGuid().ToString());
         
         var result = await repository.AddAsync(player);

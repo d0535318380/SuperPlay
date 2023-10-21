@@ -5,12 +5,12 @@ using SuperPlay.Abstractions.Extensions;
 
 namespace SuperPlay.Data;
 
-public class GenericRepository<TKey, TEntity> : IGenericRepository<TKey, TEntity> where TEntity : class
+public class RepositoryGeneric<TKey, TEntity> : IGenericRepository<TKey, TEntity> where TEntity : class
 {
     private readonly DbContext _context;
     private readonly DbSet<TEntity> _dbSet;
 
-    public GenericRepository(DbContext context)
+    public RepositoryGeneric(DbContext context)
     {
         _context = context;
         _dbSet = _context.Set<TEntity>();

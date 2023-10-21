@@ -1,5 +1,6 @@
 ﻿namespace SuperPlay.Abstractions.Data;
 
-public interface IResourceRepository : IGenericRepository<Guid, UserResource>
+public interface IResourceRepository : IGenericRepository<int, UserResource>
 {
 }
+

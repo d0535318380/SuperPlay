@@ -14,6 +14,7 @@
     <ItemGroup>
       <ProjectReference Include="..\SuperPlay.Abstractions\SuperPlay.Abstractions.csproj" />
       <ProjectReference Include="..\SuperPlay.Contracts\SuperPlay.Contracts.csproj" />
+      <ProjectReference Include="..\SuperPlay.Data\SuperPlay.Data.csproj" />
     </ItemGroup>
 
 </Project>
