@@ -6,4 +6,5 @@ namespace SuperPlay.Abstractions.Factory;
 public interface IMessageFactory
 {
     IBaseRequest FromRequest(GenericMessage message);
+    IBaseResponse FromResponse(GenericMessage message);
 }

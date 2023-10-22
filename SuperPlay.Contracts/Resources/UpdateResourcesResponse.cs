@@ -1,6 +1,5 @@
 using SuperPlay.Abstractions.Domain;
 using SuperPlay.Abstractions.Mediator;
-using SuperPlay.Contracts.Gift;
 
 namespace SuperPlay.Contracts.Resources;
 

@@ -21,10 +21,12 @@ public static class ServiceCollectionExtensions
     {
         services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(config.GetConnectionString("DefaultConnection")),
-            ServiceLifetime.Transient);
+            ServiceLifetime.Transient, ServiceLifetime.Transient);
 
         services.AddSerilog(cfg => 
-            cfg.WriteTo.Async(wt => wt.Console(new RenderedCompactJsonFormatter())));
+            cfg
+                // .MinimumLevel.Information()
+                .WriteTo.Async(wt => wt.Console()));
 
         services.AddDistributedMemoryCache();
 

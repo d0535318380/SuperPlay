@@ -1,4 +1,5 @@
 using SuperPlay.Abstractions.Services;
+using SuperPlay.Data;
 using SuperPlay.Services.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,5 +25,6 @@ app.MapGet("/ws", async (HttpContext httpContext, IGameService gameService, Canc
     await gameService.StartListenerAsync(connection, token);
 });
 
-
+await using var dbContext = app.Services.GetRequiredService<ApplicationDbContext>();
+await dbContext.MigrateAsync();
 app.Run();

@@ -17,6 +17,6 @@ public class UserConfig : IEntityTypeConfiguration<User>
     }
     
     
-    public readonly static User DefaultUser = User.Create("Default User");
-    public readonly static User DefaultFriend = User.Create("Default Friend");
+    public static readonly User DefaultUser = User.Create("Default User", id: Guid.Parse("94D5C79E-8ABA-4C82-A848-E67C42E74FB4"));
+    public static readonly User DefaultFriend = User.Create("Default Friend", id: Guid.Parse("7BDCFD49-B815-4FEC-9993-C25DE37D6E20"));
 }

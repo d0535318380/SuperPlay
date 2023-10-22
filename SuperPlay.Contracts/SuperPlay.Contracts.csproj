@@ -12,10 +12,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Abstractions\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\SuperPlay.Abstractions\SuperPlay.Abstractions.csproj" />
     </ItemGroup>
 </Project>

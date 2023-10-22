@@ -1,9 +1,7 @@
 using SuperPlay.Abstractions.Domain;
 using SuperPlay.Abstractions.Mediator;
-using SuperPlay.Contracts.Gift;
-using SuperPlay.Contracts.Resources;
 
-namespace SuperPlay.Contracts.Login;
+namespace SuperPlay.Contracts.Resources;
 
 public class UpdateResourcesCommand : BaseRequest<UpdateResourcesResponse>
 {

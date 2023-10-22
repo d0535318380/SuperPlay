@@ -24,6 +24,26 @@ public class MessageFactory : IMessageFactory
 
     public IBaseRequest FromRequest(GenericMessage message)
     {
+        var instance = Deserialize(message) as IBaseRequest;
+
+        if(instance is IHasConnectionId connection)
+        {
+            connection.ConnectionId = message.ConnectionId;
+        }
+        
+        return instance ?? throw new InvalidOperationException($"Message {message.Type} is null");
+    }
+    
+    
+    public IBaseResponse FromResponse(GenericMessage message)
+    {
+        var instance = Deserialize(message) as IBaseResponse;
+        
+        return instance ?? throw new InvalidOperationException($"Message {message.Type} is null");
+    }
+
+    private object? Deserialize(GenericMessage message)
+    {
         message.ThrowIfNull(nameof(message));
 
         if (!_typesMap.ContainsKey(message.Type))
@@ -35,15 +55,10 @@ public class MessageFactory : IMessageFactory
 
         var type = _typesMap[message.Type];
 
-        var instance = MessagePack.MessagePackSerializer.Deserialize(type, message.Payload) as IBaseRequest;
+        var instance = MessagePack.MessagePackSerializer.Deserialize(type, message.Payload);
 
-        if(instance is IHasConnectionId connection)
-        {
-            connection.ConnectionId = message.ConnectionId;
-        }
-        
         _logger.LogTrace("Message {MessageType} created", message.Type);
 
-        return instance ?? throw new InvalidOperationException($"Message {message.Type} is null");
+        return instance;
     }
 }

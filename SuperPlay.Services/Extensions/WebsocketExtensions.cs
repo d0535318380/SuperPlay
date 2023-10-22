@@ -38,7 +38,9 @@ public static class WebSocketExtensions
             !token.IsCancellationRequested && 
             context.State == WebSocketState.Open);
         
-        var instance = MessagePack.MessagePackSerializer.Deserialize<GenericMessage>(stream);
+        stream.Seek(0, SeekOrigin.Begin);
+        
+        var instance = MessagePack.MessagePackSerializer.Deserialize<GenericMessage>(stream, cancellationToken: token);
 
 
         
